@@ -1,16 +1,34 @@
-# crud
+# Trabalho de Engenharia de Software - CRUD com Flutter
 
-A new Flutter project.
+## Descrição
 
-## Getting Started
+Este repositório é parte de um trabalho acadêmico para a disciplina de Engenharia de Software, no sexto semestre do curso de Engenharia de Software pela faculdade UNICV(Centro Universitário Cidade Verde). O objetivo do trabalho é desenvolver um aplicativo Flutter que realize operações CRUD (Create, Read, Update, Delete) em registros de estudantes.
 
-This project is a starting point for a Flutter application.
+## Funcionalidades
 
-A few resources to get you started if this is your first Flutter project:
+O aplicativo permite a gestão de informações de estudantes, com os seguintes campos:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Nome (Name):** Nome completo do estudante.
+- **Idade (Age):** Idade do estudante.
+- **CPF (CPF):** Número de CPF do estudante.
+- **RA (Registro Acadêmico):** Número de Registro Acadêmico.
+- **Curso (Course):** Nome do curso que o estudante está matriculado.
+- **Avatar (Link):** Link para a imagem do perfil do estudante.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tecnologias Utilizadas
+
+- Flutter: O aplicativo é desenvolvido com o framework Flutter, que permite criar aplicativos multiplataforma de forma eficiente.
+- Dart: A linguagem de programação usada no Flutter.
+- Drift : Utilizado para persistir os dados.
+
+## Instruções de Uso
+
+1. Certifique-se de ter o ambiente de desenvolvimento Flutter configurado.
+2. Clone este repositório em sua máquina local:
+
+   git clone https://github.com/eduardogabrielz/Crud_Studants_Flutter.git
+
+Autor
+Eduardo Gabriel Zacarias Pereira    
+Contato: eduardogabrielz2002@gmail.com
+Linkedin: https://www.linkedin.com/in/eduardogabrielz/
