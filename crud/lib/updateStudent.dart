@@ -1,4 +1,5 @@
 import 'package:crud/main.dart';
+import 'package:crud/palette.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:crud/drift.dart';
@@ -12,10 +13,10 @@ class EditStudentScreen extends StatefulWidget {
   const EditStudentScreen({Key? key, required this.student}) : super(key: key);
 
   @override
-  _EditStudentScreenState createState() => _EditStudentScreenState();
+  EditStudentScreenState createState() => EditStudentScreenState();
 }
 
-class _EditStudentScreenState extends State<EditStudentScreen> {
+class EditStudentScreenState extends State<EditStudentScreen> {
   final TextEditingController idController = TextEditingController();
   final TextEditingController nameControllerAlter = TextEditingController();
   final TextEditingController ageControllerAlter = TextEditingController();
@@ -36,6 +37,8 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     courseControllerAlter.text = widget.student.course;
   }
 
+  String? initialCourseValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,111 +47,112 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
       ),
       body: Center(
         child: ListView(
-          children: <Widget>[
-            CircleAvatar(
-              radius: 100,
-              backgroundColor: const Color.fromARGB(255, 255, 33, 144),
+          children: [
+            Container(
+              width: 450,
+              decoration: const BoxDecoration(
+                color: Color(0xFF6c2d6a),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
               child: CircleAvatar(
-                radius: 95,
-                backgroundColor: const Color.fromARGB(255, 250, 23, 110),
+                radius: 100,
+                backgroundColor: ColorPalette.iconColor,
                 child: CircleAvatar(
-                  radius: 90,
+                  radius: 95,
                   backgroundImage: NetworkImage(avatarControllerAlter.text),
                 ),
               ),
             ),
+            Container(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: TextField(
                 decoration: InputDecoration(
                     labelText: 'Name',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
+                    labelStyle: const TextStyle(color: ColorPalette.textColor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2)),
+                            color: ColorPalette.borderColorInput, width: 2)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 0, 0), width: 2))),
+                            color: ColorPalette.borderColorInputActivate,
+                            width: 2))),
                 controller: nameControllerAlter,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: TextField(
                 decoration: InputDecoration(
                     labelText: 'Age',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
+                    labelStyle: const TextStyle(color: ColorPalette.textColor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2)),
+                            color: ColorPalette.borderColorInput, width: 2)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 0, 0), width: 2))),
+                            color: ColorPalette.borderColorInputActivate,
+                            width: 2))),
                 inputFormatters: [LengthLimitingTextInputFormatter(2)],
                 controller: ageControllerAlter,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: TextField(
                 decoration: InputDecoration(
                     labelText: 'Cpf',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
+                    labelStyle: const TextStyle(color: ColorPalette.textColor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2)),
+                            color: ColorPalette.borderColorInput, width: 2)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 0, 0), width: 2))),
+                            color: ColorPalette.borderColorInputActivate,
+                            width: 2))),
                 inputFormatters: [LengthLimitingTextInputFormatter(11)],
                 controller: cpfControllerAlter,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: TextField(
                 decoration: InputDecoration(
                     labelText: 'Ra',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
+                    labelStyle: const TextStyle(color: ColorPalette.textColor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2)),
+                            color: ColorPalette.borderColorInput, width: 2)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 0, 0), width: 2))),
+                            color: ColorPalette.borderColorInputActivate,
+                            width: 2))),
                 inputFormatters: [LengthLimitingTextInputFormatter(5)],
                 controller: raControllerAlter,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: DropdownButtonFormField<String>(
                 value: courseControllerAlter.text,
                 decoration: InputDecoration(
                     labelText: 'Course',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
+                    labelStyle: const TextStyle(color: ColorPalette.textColor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(21),
                         borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2))),
+                            color: ColorPalette.borderColorInput, width: 2))),
                 items: nameCourses.map<DropdownMenuItem<String>>((value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -161,86 +165,128 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+              padding: const EdgeInsets.all(5),
               child: TextField(
-                decoration: InputDecoration(
-                    labelText: 'Avatar',
-                    labelStyle:
-                        const TextStyle(color: Color.fromARGB(255, 184, 4, 4)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(21),
-                        borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 79, 146),
-                            width: 2)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(21),
-                        borderSide: const BorderSide(
-                            color: Color.fromARGB(255, 255, 0, 0), width: 2))),
-                controller: avatarControllerAlter,
-              ),
+                  decoration: InputDecoration(
+                      labelText: 'Avatar',
+                      labelStyle:
+                          const TextStyle(color: ColorPalette.textColor),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(21),
+                          borderSide: const BorderSide(
+                              color: ColorPalette.borderColorInput, width: 2)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(21),
+                          borderSide: const BorderSide(
+                              color: ColorPalette.borderColorInputActivate,
+                              width: 2))),
+                  controller: avatarControllerAlter,
+                  onChanged: (avatarControllerAlter) {
+                    setState(() {
+                      avatarControllerAlter;
+                    });
+                  }),
             ),
             Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  int id = int.parse(idController.text);
-                  String alteredName = nameControllerAlter.text;
-                  String alteredAge = ageControllerAlter.text;
-                  String alteredCpf = cpfControllerAlter.text;
-                  String alteredRa = raControllerAlter.text;
-                  String alteredCourse = courseControllerAlter.text;
-                  String alteredAvatar = avatarControllerAlter.text;
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    int id = int.parse(idController.text);
+                    String alteredName = nameControllerAlter.text;
+                    String alteredAge = ageControllerAlter.text;
+                    String alteredCpf = cpfControllerAlter.text;
+                    String alteredRa = raControllerAlter.text;
+                    String alteredCourse = courseControllerAlter.text;
+                    String alteredAvatar = avatarControllerAlter.text;
 
-                  if (isValidName(alteredName) ||
-                      isValidAge(alteredAge) ||
-                      isValidCpf(alteredCpf) ||
-                      isValidRa(alteredRa) ||
-                      isValidAvatar(alteredAvatar)) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Warning'),
-                            content: const Text('Invalid update student'),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text("Exit"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  } else {
-                    database.updateStudents(
-                      StudentsCompanion(
-                          id: Value(id),
-                          name: Value(alteredName),
-                          age: Value(alteredAge),
-                          cpf: Value(alteredCpf),
-                          ra: Value(alteredRa),
-                          avatar: Value(alteredAvatar),
-                          course: Value(alteredCourse)),
-                    );
-                    Navigator.pop(
-                        context,
-                        Student(
-                            id: id,
-                            name: alteredName,
-                            cpf: alteredCpf,
-                            ra: alteredRa,
-                            age: alteredAge,
-                            avatar: alteredAvatar,
-                            course: alteredCourse));
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromARGB(255, 207, 21, 93)),
+                    if (isValidName(alteredName) ||
+                        isValidAge(alteredAge) ||
+                        isValidCpf(alteredCpf) ||
+                        isValidRa(alteredRa) ||
+                        isValidAvatar(alteredAvatar)) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Warning'),
+                              content: const Text('Invalid update student'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text("Exit"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                    } else {
+                      database.updateStudents(
+                        StudentsCompanion(
+                            id: Value(id),
+                            name: Value(alteredName),
+                            age: Value(alteredAge),
+                            cpf: Value(alteredCpf),
+                            ra: Value(alteredRa),
+                            avatar: Value(alteredAvatar),
+                            course: Value(alteredCourse)),
+                      );
+                      Navigator.pop(
+                          context,
+                          Student(
+                              id: id,
+                              name: alteredName,
+                              cpf: alteredCpf,
+                              ra: alteredRa,
+                              age: alteredAge,
+                              avatar: alteredAvatar,
+                              course: alteredCourse));
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(const Color(0xFF522151)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  child: const Text('Save'),
                 ),
-                child: const Text('Save'),
-              ),
-            ),
+                const SizedBox(width: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      List<TextEditingController> controllersToClear = [
+                        nameControllerAlter,
+                        ageControllerAlter,
+                        cpfControllerAlter,
+                        raControllerAlter,
+                        avatarControllerAlter,
+                      ];
+
+                      for (var controller in controllersToClear) {
+                        controller.clear();
+                      }
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      const Color(0xFF8D2E8B),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  child: const Text('Clear'),
+                ),
+              ],
+            )),
           ],
         ),
       ),

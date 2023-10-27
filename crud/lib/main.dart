@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'validate.dart';
 import 'updateStudent.dart';
 import 'nameCourses.dart';
+import 'palette.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Students List App',
-      theme: ThemeData(primarySwatch: Colors.pink),
+      theme: ThemeData(primarySwatch: Colors.purple),
       home: const HomeScreen(),
     );
   }
@@ -109,17 +110,32 @@ class StudentsListScreenState extends State<StudentsListScreen> {
             itemCount: _students.length,
             itemBuilder: (context, i) {
               final avatar = CircleAvatar(
-                backgroundImage: NetworkImage(_students[i].avatar),
+                backgroundColor: ColorPalette.iconColor,
+                radius: 20,
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(_students[i].avatar),
+                  radius: 19,
+                ),
               );
               return Container(
                 margin: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 253, 166, 166),
-                  border: Border.all(color: Colors.white, width: 1.0),
+                  color: ColorPalette.cardColor,
                   borderRadius: BorderRadius.circular(6.0),
+                  border: Border.all(
+                    color: const Color(0xFF000000),
+                    width: 1,
+                  ),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: ColorPalette.borderColorInput,
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: ListTile(
-                  textColor: const Color.fromARGB(221, 10, 1, 1),
+                  textColor: const Color(0xFFFFFFFF),
                   leading: avatar,
                   title: Text(
                       'Name: ${_students[i].name} | Age: ${_students[i].age}'),
@@ -153,14 +169,14 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                               });
                             }
                           },
-                          color: const Color.fromARGB(255, 255, 73, 73),
+                          color: ColorPalette.iconColor,
                           icon: const Icon(Icons.edit),
                         ),
                         IconButton(
                           onPressed: () {
                             _removeStudent(_students[i]);
                           },
-                          color: const Color.fromARGB(255, 238, 34, 19),
+                          color: ColorPalette.iconColor,
                           icon: const Icon(Icons.delete),
                         ),
                       ],
@@ -197,17 +213,18 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                                 decoration: InputDecoration(
                                     labelText: 'Name',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2)),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(21),
                                       borderSide: const BorderSide(
-                                          color: Color.fromARGB(255, 255, 0, 0),
+                                          color: ColorPalette
+                                              .borderColorInputActivate,
                                           width: 2),
                                     )),
                                 controller: nameController,
@@ -219,18 +236,18 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                                 decoration: InputDecoration(
                                     labelText: 'Age',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2)),
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
+                                            color: ColorPalette
+                                                .borderColorInputActivate,
                                             width: 2))),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(2)
@@ -244,18 +261,18 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                                 decoration: InputDecoration(
                                     labelText: 'Cpf',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2)),
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
+                                            color: ColorPalette
+                                                .borderColorInputActivate,
                                             width: 2))),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(11)
@@ -264,23 +281,23 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.all(5),
                               child: TextField(
                                 decoration: InputDecoration(
                                     labelText: 'Ra',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2)),
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
+                                            color: ColorPalette
+                                                .borderColorInputActivate,
                                             width: 2))),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(5)
@@ -294,12 +311,12 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                                 decoration: InputDecoration(
                                     labelText: 'Course',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2))),
                                 items: nameCourses
                                     .map<DropdownMenuItem<String>>((value) {
@@ -319,18 +336,18 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                                 decoration: InputDecoration(
                                     labelText: 'Avatar',
                                     labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 184, 4, 4)),
+                                        color: ColorPalette.textColor),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color: Color.fromARGB(
-                                                255, 255, 79, 146),
+                                            color:
+                                                ColorPalette.borderColorInput,
                                             width: 2)),
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(21),
                                         borderSide: const BorderSide(
-                                            color:
-                                                Color.fromARGB(255, 255, 0, 0),
+                                            color: ColorPalette
+                                                .borderColorInputActivate,
                                             width: 2))),
                                 controller: avatarController,
                               ),
@@ -393,7 +410,7 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                     ))),
           );
         },
-        backgroundColor: const Color.fromARGB(255, 207, 21, 93),
+        backgroundColor: const Color(0xFF522151),
         child: const Icon(Icons.add),
       ),
     );
