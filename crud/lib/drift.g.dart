@@ -248,12 +248,151 @@ class StudentsCompanion extends UpdateCompanion<Student> {
   }
 }
 
+class $CollegesTable extends Colleges with TableInfo<$CollegesTable, College> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CollegesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _passwordMeta =
+      const VerificationMeta('password');
+  @override
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
+      'password', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, email, password];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'colleges';
+  @override
+  VerificationContext validateIntegrity(Insertable<College> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('password')) {
+      context.handle(_passwordMeta,
+          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+    } else if (isInserting) {
+      context.missing(_passwordMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  College map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return College(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
+      password: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
+    );
+  }
+
+  @override
+  $CollegesTable createAlias(String alias) {
+    return $CollegesTable(attachedDatabase, alias);
+  }
+}
+
+class CollegesCompanion extends UpdateCompanion<College> {
+  final Value<int> id;
+  final Value<String> email;
+  final Value<String> password;
+  const CollegesCompanion({
+    this.id = const Value.absent(),
+    this.email = const Value.absent(),
+    this.password = const Value.absent(),
+  });
+  CollegesCompanion.insert({
+    this.id = const Value.absent(),
+    required String email,
+    required String password,
+  })  : email = Value(email),
+        password = Value(password);
+  static Insertable<College> custom({
+    Expression<int>? id,
+    Expression<String>? email,
+    Expression<String>? password,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (email != null) 'email': email,
+      if (password != null) 'password': password,
+    });
+  }
+
+  CollegesCompanion copyWith(
+      {Value<int>? id, Value<String>? email, Value<String>? password}) {
+    return CollegesCompanion(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      password: password ?? this.password,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollegesCompanion(')
+          ..write('id: $id, ')
+          ..write('email: $email, ')
+          ..write('password: $password')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $StudentsTable students = $StudentsTable(this);
+  late final $CollegesTable colleges = $CollegesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [students];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [students, colleges];
 }

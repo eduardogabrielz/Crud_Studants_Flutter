@@ -33,7 +33,26 @@ class Student {
       required this.course});
 }
 
-@DriftDatabase(tables: [Students])
+@UseRowClass(College)
+class Colleges extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get email => text()();
+  TextColumn get password => text()();
+}
+
+class College {
+  final int id;
+  final String email;
+  final String password;
+
+  College({
+    required this.id,
+    required this.email,
+    required this.password,
+  });
+}
+
+@DriftDatabase(tables: [Students, Colleges])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -47,6 +66,10 @@ class AppDatabase extends _$AppDatabase {
       update(students).replace(student);
   Future deleteStudents(StudentsCompanion student) =>
       delete(students).delete(student);
+
+  Future<List<College>> viewColleges() => select(colleges).get();
+  Future<int> insertCollege(CollegesCompanion college) =>
+      into(colleges).insert(college);
 }
 
 DatabaseConnection _openConnection() {

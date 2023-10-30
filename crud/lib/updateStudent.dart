@@ -66,7 +66,6 @@ class EditStudentScreenState extends State<EditStudentScreen> {
                 ),
               ),
             ),
-            Container(),
             Padding(
               padding: const EdgeInsets.all(5),
               child: TextField(
@@ -242,7 +241,8 @@ class EditStudentScreenState extends State<EditStudentScreen> {
                               ra: alteredRa,
                               age: alteredAge,
                               avatar: alteredAvatar,
-                              course: alteredCourse));
+                              course: alteredCourse,
+                              ));
                     }
                   },
                   style: ButtonStyle(

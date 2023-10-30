@@ -2,13 +2,15 @@ import 'package:crud/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/services.dart';
+
 import 'validate.dart';
 import 'updateStudent.dart';
 import 'nameCourses.dart';
 import 'palette.dart';
+import 'loginScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 final List<Student> _students = [];
@@ -40,10 +42,10 @@ class HomeScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const StudentsListScreen(),
+                builder: (context) => const LoginScreen(),
               ));
             },
-            child: const Text('Start Student List'),
+            child: const Text('Login'),
           ),
         ));
   }
@@ -97,6 +99,225 @@ class StudentsListScreenState extends State<StudentsListScreen> {
     await database.insertStudents(newStudent).then((_) {
       _loadStudents();
     });
+  }
+
+
+  void registerStudent() {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController ageController = TextEditingController();
+    TextEditingController cpfController = TextEditingController();
+    TextEditingController raController = TextEditingController();
+    TextEditingController avatarController = TextEditingController();
+    TextEditingController courseController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => Center(
+          child: SizedBox(
+              width: 450,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  AlertDialog(
+                    title: const Text('Add Student'),
+                    content: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(21),
+                                borderSide: const BorderSide(
+                                    color:
+                                        ColorPalette.borderColorInputActivate,
+                                    width: 2),
+                              )),
+                          controller: nameController,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Age',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color:
+                                          ColorPalette.borderColorInputActivate,
+                                      width: 2))),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2)
+                          ],
+                          controller: ageController,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Cpf',
+                              hintText: 'Minimum 11 Characters',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color:
+                                          ColorPalette.borderColorInputActivate,
+                                      width: 2))),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(11)
+                          ],
+                          controller: cpfController,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Ra',
+                              hintText: 'Minimum 5 Characters',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color:
+                                          ColorPalette.borderColorInputActivate,
+                                      width: 2))),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(5)
+                          ],
+                          controller: raController,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                              labelText: 'Course',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2))),
+                          items: nameCourses
+                              .map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (selectedCourse) {
+                            courseController.text = selectedCourse!;
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Avatar',
+                              labelStyle: const TextStyle(
+                                  color: ColorPalette.textColor),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color: ColorPalette.borderColorInput,
+                                      width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                  borderSide: const BorderSide(
+                                      color:
+                                          ColorPalette.borderColorInputActivate,
+                                      width: 2))),
+                          controller: avatarController,
+                        ),
+                      ),
+                    ]),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          String name = nameController.text;
+                          String age = ageController.text;
+                          String cpf = cpfController.text;
+                          String ra = raController.text;
+                          String avatar = avatarController.text;
+                          String course = courseController.text;
+
+                          if (isValidName(name) ||
+                              isValidAge(age) ||
+                              isValidCpf(cpf) ||
+                              isValidRa(ra) ||
+                              isValidAvatar(avatar)) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Warning"),
+                                  content: const Text("Invalid student"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text("Exit"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            _addStudents(name, ra, cpf, age, avatar, course);
+                            Navigator.of(context).pop();
+                            nameController.clear();
+                            ageController.clear();
+                            cpfController.clear();
+                            raController.clear();
+                            avatarController.clear();
+                          }
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  )
+                ],
+              ))),
+    );
   }
 
   @override
@@ -190,225 +411,7 @@ class StudentsListScreenState extends State<StudentsListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          TextEditingController nameController = TextEditingController();
-          TextEditingController ageController = TextEditingController();
-          TextEditingController cpfController = TextEditingController();
-          TextEditingController raController = TextEditingController();
-          TextEditingController avatarController = TextEditingController();
-          TextEditingController courseController = TextEditingController();
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => Center(
-                child: SizedBox(
-                    width: 450,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        AlertDialog(
-                          title: const Text('Add Student'),
-                          content: Column(children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    labelText: 'Name',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2)),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(21),
-                                      borderSide: const BorderSide(
-                                          color: ColorPalette
-                                              .borderColorInputActivate,
-                                          width: 2),
-                                    )),
-                                controller: nameController,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    labelText: 'Age',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color: ColorPalette
-                                                .borderColorInputActivate,
-                                            width: 2))),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(2)
-                                ],
-                                controller: ageController,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    labelText: 'Cpf',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color: ColorPalette
-                                                .borderColorInputActivate,
-                                            width: 2))),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(11)
-                                ],
-                                controller: cpfController,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    labelText: 'Ra',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color: ColorPalette
-                                                .borderColorInputActivate,
-                                            width: 2))),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(5)
-                                ],
-                                controller: raController,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: DropdownButtonFormField<String>(
-                                decoration: InputDecoration(
-                                    labelText: 'Course',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2))),
-                                items: nameCourses
-                                    .map<DropdownMenuItem<String>>((value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (selectedCourse) {
-                                  courseController.text = selectedCourse!;
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    labelText: 'Avatar',
-                                    labelStyle: const TextStyle(
-                                        color: ColorPalette.textColor),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color:
-                                                ColorPalette.borderColorInput,
-                                            width: 2)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(21),
-                                        borderSide: const BorderSide(
-                                            color: ColorPalette
-                                                .borderColorInputActivate,
-                                            width: 2))),
-                                controller: avatarController,
-                              ),
-                            ),
-                          ]),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                String name = nameController.text;
-                                String age = ageController.text;
-                                String cpf = cpfController.text;
-                                String ra = raController.text;
-                                String avatar = avatarController.text;
-                                String course = courseController.text;
-                                if (isValidName(name) ||
-                                    isValidAge(age) ||
-                                    isValidCpf(cpf) ||
-                                    isValidRa(ra) ||
-                                    isValidAvatar(avatar)) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text("Warning"),
-                                        content: const Text("Invalid student"),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text("Exit"),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  _addStudents(
-                                      name, ra, cpf, age, avatar, course);
-                                  Navigator.of(context).pop();
-                                  nameController.clear();
-                                  ageController.clear();
-                                  cpfController.clear();
-                                  raController.clear();
-                                  avatarController.clear();
-                                  courseController.clear();
-                                }
-                              },
-                              child: const Text('Save'),
-                            ),
-                          ],
-                        )
-                      ],
-                    ))),
-          );
+          registerStudent();
         },
         backgroundColor: const Color(0xFF522151),
         child: const Icon(Icons.add),
