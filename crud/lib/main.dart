@@ -52,15 +52,20 @@ class HomeScreen extends StatelessWidget {
 }
 
 class StudentsListScreen extends StatefulWidget {
-  const StudentsListScreen({super.key});
+  final int collegeId;
+
+  const StudentsListScreen({super.key, required this.collegeId});
 
   @override
   StudentsListScreenState createState() => StudentsListScreenState();
 }
 
 class StudentsListScreenState extends State<StudentsListScreen> {
+  TextEditingController collegeIdController = TextEditingController();
+
   @override
   void initState() {
+    collegeIdController.text = widget.collegeId.toString();
     super.initState();
     _loadStudents();
   }
@@ -92,15 +97,20 @@ class StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   Future<void> _addStudents(String name, String ra, String cpf, String age,
-      String avatar, String course) async {
+      String avatar, String course, int collegeId) async {
     final newStudent = StudentsCompanion.insert(
-        name: name, ra: ra, cpf: cpf, age: age, avatar: avatar, course: course);
+        name: name,
+        ra: ra,
+        cpf: cpf,
+        age: age,
+        avatar: avatar,
+        course: course,
+        collegeId: collegeId);
 
     await database.insertStudents(newStudent).then((_) {
       _loadStudents();
     });
   }
-
 
   void registerStudent() {
     TextEditingController nameController = TextEditingController();
@@ -278,6 +288,7 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                           String ra = raController.text;
                           String avatar = avatarController.text;
                           String course = courseController.text;
+                          int collegeId = int.parse(collegeIdController.text);
 
                           if (isValidName(name) ||
                               isValidAge(age) ||
@@ -302,7 +313,8 @@ class StudentsListScreenState extends State<StudentsListScreen> {
                               },
                             );
                           } else {
-                            _addStudents(name, ra, cpf, age, avatar, course);
+                            _addStudents(
+                                name, ra, cpf, age, avatar, course, collegeId);
                             Navigator.of(context).pop();
                             nameController.clear();
                             ageController.clear();
@@ -330,81 +342,88 @@ class StudentsListScreenState extends State<StudentsListScreen> {
             shrinkWrap: true,
             itemCount: _students.length,
             itemBuilder: (context, i) {
-              final avatar = CircleAvatar(
-                backgroundColor: ColorPalette.iconColor,
-                radius: 20,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(_students[i].avatar),
-                  radius: 19,
-                ),
-              );
-              return Container(
-                margin: const EdgeInsets.all(5.0),
-                decoration: BoxDecoration(
-                  color: ColorPalette.cardColor,
-                  borderRadius: BorderRadius.circular(6.0),
-                  border: Border.all(
-                    color: const Color(0xFF000000),
-                    width: 1,
+              // Verifique se o collegeId do estudante é igual ao _selectedCollegeId
+              if (_students[i].collegeId ==
+                  int.parse(collegeIdController.text)) {
+                final avatar = CircleAvatar(
+                  backgroundColor: ColorPalette.iconColor,
+                  radius: 20,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(_students[i].avatar),
+                    radius: 19,
                   ),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: ColorPalette.borderColorInput,
-                      blurRadius: 5,
-                      offset: Offset(0, 2),
+                );
+                return Container(
+                  margin: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    color: ColorPalette.cardColor,
+                    borderRadius: BorderRadius.circular(6.0),
+                    border: Border.all(
+                      color: const Color(0xFF000000),
+                      width: 1,
                     ),
-                  ],
-                ),
-                child: ListTile(
-                  textColor: const Color(0xFFFFFFFF),
-                  leading: avatar,
-                  title: Text(
-                      'Name: ${_students[i].name} | Age: ${_students[i].age}'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Cpf: ${_students[i].cpf} | Ra: ${_students[i].ra}',
-                      ),
-                      Text(
-                        'Course: ${_students[i].course}',
+                    boxShadow: const [
+                      BoxShadow(
+                        color: ColorPalette.borderColorInput,
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
                       ),
                     ],
                   ),
-                  trailing: SizedBox(
-                    width: 100,
-                    child: Row(
+                  child: ListTile(
+                    textColor: const Color(0xFFFFFFFF),
+                    leading: avatar,
+                    title: Text(
+                        'Name: ${_students[i].name} | Age: ${_students[i].age}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        IconButton(
-                          onPressed: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EditStudentScreen(student: _students[i]),
-                              ),
-                            );
-                            if (result != null) {
-                              setState(() {
-                                _students[i] = result;
-                              });
-                            }
-                          },
-                          color: ColorPalette.iconColor,
-                          icon: const Icon(Icons.edit),
+                        Text(
+                          'Cpf: ${_students[i].cpf} | Ra: ${_students[i].ra}',
                         ),
-                        IconButton(
-                          onPressed: () {
-                            _removeStudent(_students[i]);
-                          },
-                          color: ColorPalette.iconColor,
-                          icon: const Icon(Icons.delete),
+                        Text(
+                          'Course: ${_students[i].course}',
                         ),
                       ],
                     ),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              final result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditStudentScreen(student: _students[i]),
+                                ),
+                              );
+                              if (result != null) {
+                                setState(() {
+                                  _students[i] = result;
+                                });
+                              }
+                            },
+                            color: ColorPalette.iconColor,
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              _removeStudent(_students[i]);
+                            },
+                            color: ColorPalette.iconColor,
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              );
+                );
+              } else {
+                // Se o collegeId não corresponder, retorne um contêiner vazio.
+                return Container();
+              }
             },
           ),
         ],

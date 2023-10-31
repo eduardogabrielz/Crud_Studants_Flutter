@@ -169,6 +169,15 @@ class LoginScreenState extends State<LoginScreen> {
     return false;
   }
 
+  int getCollegeIdIfEmailAndPasswordValid(String email, String password) {
+    for (var college in _colleges) {
+      if (college.email == email && college.password == password) {
+        return college.id; // Suponha que 'id' seja o campo do ID do colégio.
+      }
+    }
+    return -1; // Retorne -1 se as credenciais não forem válidas.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -259,8 +268,17 @@ class LoginScreenState extends State<LoginScreen> {
                       bool isPersonFound = isEmailAndPasswordValid(
                           emailController.text, passwordController.text);
                       if (isPersonFound) {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const StudentsListScreen()));
+                        int collegeId = getCollegeIdIfEmailAndPasswordValid(
+                            emailController.text, passwordController.text);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StudentsListScreen(collegeId: collegeId),
+                          ),
+                        );
+
                         emailController.clear();
                         passwordController.clear();
                       } else {

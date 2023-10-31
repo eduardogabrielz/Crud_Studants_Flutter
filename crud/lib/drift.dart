@@ -12,6 +12,7 @@ class Students extends Table {
   TextColumn get age => text()();
   TextColumn get avatar => text()();
   TextColumn get course => text()();
+  IntColumn get collegeId => integer().references(Colleges, #id)();
 }
 
 class Student {
@@ -22,6 +23,7 @@ class Student {
   final String age;
   final String avatar;
   final String course;
+  final int collegeId;
 
   Student(
       {required this.id,
@@ -30,7 +32,8 @@ class Student {
       required this.ra,
       required this.age,
       required this.avatar,
-      required this.course});
+      required this.course,
+      required this.collegeId});
 }
 
 @UseRowClass(College)

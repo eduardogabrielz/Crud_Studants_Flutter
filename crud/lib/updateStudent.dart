@@ -24,6 +24,7 @@ class EditStudentScreenState extends State<EditStudentScreen> {
   final TextEditingController raControllerAlter = TextEditingController();
   final TextEditingController avatarControllerAlter = TextEditingController();
   final TextEditingController courseControllerAlter = TextEditingController();
+  final TextEditingController collegeIdController = TextEditingController();
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class EditStudentScreenState extends State<EditStudentScreen> {
     raControllerAlter.text = widget.student.ra;
     avatarControllerAlter.text = widget.student.avatar;
     courseControllerAlter.text = widget.student.course;
+    collegeIdController.text = widget.student.collegeId.toString();
   }
 
   String? initialCourseValue;
@@ -199,6 +201,7 @@ class EditStudentScreenState extends State<EditStudentScreen> {
                     String alteredRa = raControllerAlter.text;
                     String alteredCourse = courseControllerAlter.text;
                     String alteredAvatar = avatarControllerAlter.text;
+                    int collegeId = int.parse(collegeIdController.text);
 
                     if (isValidName(alteredName) ||
                         isValidAge(alteredAge) ||
@@ -230,19 +233,21 @@ class EditStudentScreenState extends State<EditStudentScreen> {
                             cpf: Value(alteredCpf),
                             ra: Value(alteredRa),
                             avatar: Value(alteredAvatar),
-                            course: Value(alteredCourse)),
+                            course: Value(alteredCourse),
+                            collegeId: Value(collegeId)),
                       );
                       Navigator.pop(
                           context,
                           Student(
-                              id: id,
-                              name: alteredName,
-                              cpf: alteredCpf,
-                              ra: alteredRa,
-                              age: alteredAge,
-                              avatar: alteredAvatar,
-                              course: alteredCourse,
-                              ));
+                            id: id,
+                            name: alteredName,
+                            cpf: alteredCpf,
+                            ra: alteredRa,
+                            age: alteredAge,
+                            avatar: alteredAvatar,
+                            course: alteredCourse,
+                            collegeId: collegeId,
+                          ));
                     }
                   },
                   style: ButtonStyle(
