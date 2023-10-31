@@ -332,102 +332,127 @@ class StudentsListScreenState extends State<StudentsListScreen> {
     );
   }
 
+  Widget noStudents(String text) {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: ColorPalette.cardColor,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool collegeIdFound = _students.any((student) {
+      return student.collegeId == int.parse(collegeIdController.text);
+    });
     return Scaffold(
       appBar: AppBar(title: const Text('Students List')),
-      body: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: _students.length,
-            itemBuilder: (context, i) {
-              // Verifique se o collegeId do estudante é igual ao _selectedCollegeId
-              if (_students[i].collegeId ==
-                  int.parse(collegeIdController.text)) {
-                final avatar = CircleAvatar(
-                  backgroundColor: ColorPalette.iconColor,
-                  radius: 20,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(_students[i].avatar),
-                    radius: 19,
-                  ),
-                );
-                return Container(
-                  margin: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    color: ColorPalette.cardColor,
-                    borderRadius: BorderRadius.circular(6.0),
-                    border: Border.all(
-                      color: const Color(0xFF000000),
-                      width: 1,
-                    ),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: ColorPalette.borderColorInput,
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    textColor: const Color(0xFFFFFFFF),
-                    leading: avatar,
-                    title: Text(
-                        'Name: ${_students[i].name} | Age: ${_students[i].age}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Cpf: ${_students[i].cpf} | Ra: ${_students[i].ra}',
-                        ),
-                        Text(
-                          'Course: ${_students[i].course}',
-                        ),
-                      ],
-                    ),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              final result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      EditStudentScreen(student: _students[i]),
+      body: _students.isEmpty || !collegeIdFound
+          ? noStudents("No students available. Please register the students")
+          : Center(
+              child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _students.length,
+                    itemBuilder: (context, i) {
+                      if (_students[i].collegeId ==
+                          int.parse(collegeIdController.text)) {
+                        final avatar = CircleAvatar(
+                          backgroundColor: ColorPalette.iconColor,
+                          radius: 20,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(_students[i].avatar),
+                            radius: 19,
+                          ),
+                        );
+                        return Container(
+                          margin: const EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            color: ColorPalette.cardColor,
+                            borderRadius: BorderRadius.circular(6.0),
+                            border: Border.all(
+                              color: const Color(0xFF000000),
+                              width: 1,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: ColorPalette.borderColorInput,
+                                blurRadius: 5,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            textColor: const Color(0xFFFFFFFF),
+                            leading: avatar,
+                            title: Text(
+                                'Name: ${_students[i].name} | Age: ${_students[i].age}'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Cpf: ${_students[i].cpf} | Ra: ${_students[i].ra}',
                                 ),
-                              );
-                              if (result != null) {
-                                setState(() {
-                                  _students[i] = result;
-                                });
-                              }
-                            },
-                            color: ColorPalette.iconColor,
-                            icon: const Icon(Icons.edit),
+                                Text(
+                                  'Course: ${_students[i].course}',
+                                ),
+                              ],
+                            ),
+                            trailing: SizedBox(
+                              width: 100,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      final result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditStudentScreen(
+                                                  student: _students[i]),
+                                        ),
+                                      );
+                                      if (result != null) {
+                                        setState(() {
+                                          _students[i] = result;
+                                        });
+                                      }
+                                    },
+                                    color: ColorPalette.iconColor,
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      _removeStudent(_students[i]);
+                                    },
+                                    color: ColorPalette.iconColor,
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          IconButton(
-                            onPressed: () {
-                              _removeStudent(_students[i]);
-                            },
-                            color: ColorPalette.iconColor,
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ),
+                        );
+                      }
+                      return null;
+                    },
                   ),
-                );
-              } else {
-                // Se o collegeId não corresponder, retorne um contêiner vazio.
-                return Container();
-              }
-            },
-          ),
-        ],
-      ),
+                ),
+              ],
+            )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           registerStudent();

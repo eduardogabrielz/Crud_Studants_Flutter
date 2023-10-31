@@ -2,11 +2,16 @@
 
 ## Descrição
 
-Este repositório é parte de um trabalho acadêmico para a disciplina de Engenharia de Software, no sexto semestre do curso de Engenharia de Software pela faculdade UNICV(Centro Universitário Cidade Verde). O objetivo do trabalho é desenvolver um aplicativo Flutter que realize operações CRUD (Create, Read, Update, Delete) em registros de estudantes.
+Este repositório faz parte de um trabalho acadêmico para a disciplina de Engenharia de Software no sexto semestre do curso de Engenharia de Software no UNICV (Centro Universitário Cidade Verde). O objetivo do trabalho é desenvolver um aplicativo Flutter que permita a gestão de informações de estudantes, realizando operações CRUD (Create, Read, Update, Delete) em registros de estudantes.
+
+## Contexto
+Sistema para administrar o registro de alunos da instituição. Antes de incluir os alunos no sistema, é essencial estabelecer um arquivo de registro exclusivo para a universidade, sendo que cada universidade manterá seu conjunto de registros de estudantes.
 
 ## Funcionalidades
 
-O aplicativo permite a gestão de informações de estudantes, com os seguintes campos:
+Cadastro da Universidade (College): O sistema permite o cadastro de uma universidade por meio do fornecimento de um endereço de e-mail e senha. Isso garante que apenas usuários autorizados possam acessar e gerenciar os registros de estudantes dessa universidade.
+
+ -- Gerenciamento de Estudantes (Students): Após o login da universidade, o sistema permitirá adicionar, visualizar, atualizar e excluir os registros de estudantes. Cada registro de estudante incluirá as seguintes informações: --
 
 - **Nome (Name):** Nome completo do estudante.
 - **Idade (Age):** Idade do estudante.
@@ -29,6 +34,5 @@ O aplicativo permite a gestão de informações de estudantes, com os seguintes 
    git clone https://github.com/eduardogabrielz/Crud_Studants_Flutter.git
 
 Autor
-Eduardo Gabriel Zacarias Pereira    
-Contato: eduardogabrielz2002@gmail.com
-Linkedin: https://www.linkedin.com/in/eduardogabrielz/
+**Eduardo Gabriel Zacarias Pereira**  
+Contato: **eduardogabrielz2002@gmail.com** // Linkedin: **https://www.linkedin.com/in/eduardogabrielz/**
