@@ -1,3 +1,5 @@
+import 'package:crud/mainApp/square_tile.dart';
+
 import '/appDatabase/drift.dart';
 import 'main.dart';
 import 'package:crud/acceptance/validate.dart';
@@ -240,15 +242,24 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      backgroundColor: ColorPalette.backgroundColor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Icon(
+                Icons.lock,
+                size: 100,
+              ),
+              const SizedBox(height: 10),
+              const Text('Welcome back you\'we missed you!',
+                  style: TextStyle(
+                      color: ColorPalette.textColor,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 20)),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: TextField(
@@ -305,31 +316,25 @@ class LoginScreenState extends State<LoginScreen> {
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Forget Password?',
+                      style: TextStyle(color: ColorPalette.textColor),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 183,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        registerCollege();
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xFF522151)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      child: const Text('Register'),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: 183,
+                    width: 400,
+                    height: 45,
                     child: ElevatedButton(
                       onPressed: () async {
                         ValidationStatus isPersonFound =
@@ -375,9 +380,79 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      child: const Text('Login'),
+                      child: const Text('Sign In'),
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Row(
+                    children: [
+                      Expanded(
+                          child: Divider(
+                              thickness: 0.5,
+                              color: ColorPalette.borderColorInputActivate)),
+                      Text('Or continue with'),
+                      Expanded(
+                          child: Divider(
+                              thickness: 0.5,
+                              color: ColorPalette.borderColorInputActivate))
+                    ],
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SquareTile(
+                          imagePath:
+                              'https://cdn-icons-png.flaticon.com/512/2875/2875331.png'),
+                      SizedBox(width: 10),
+                      SquareTile(
+                          imagePath:
+                              'https://cdn-icons-png.flaticon.com/512/0/747.png')
+                    ],
+                  ),
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: registerCollege,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('not a member?'),
+                            SizedBox(width: 4),
+                            Text(
+                              'Register now',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
                   )
+                  /*
+                  SizedBox(
+                    width: 400,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        registerCollege();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF522151)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      child: const Text('Register'),
+                    ),
+                  ),*/
                 ],
               ),
             ],
