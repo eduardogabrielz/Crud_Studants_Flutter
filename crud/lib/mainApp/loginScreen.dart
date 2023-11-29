@@ -166,26 +166,31 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   ValidationStatus isEmailAndPasswordValid(String email, String password) {
+    bool isEmailFound = false;
+    bool isPasswordFound = false;
     if (email.isEmpty || password.isEmpty) {
       return ValidationStatus.invalidInput;
     }
 
-    bool isEmailFound = false;
-
     for (var college in _colleges) {
-      if (college.email == email) {
+      if (college.email == email && college.password == password) {
         isEmailFound = true;
-        if (college.password == password) {
-          return ValidationStatus.validCredentials;
-        } else {
-          return ValidationStatus.passwordIncorrect;
-        }
+        isPasswordFound = true;
+        return ValidationStatus.validCredentials;
+      } else if (college.email == email) {
+        isEmailFound = true;
+      } else if (college.password == password) {
+        isPasswordFound = true;
       }
     }
-    if (!isEmailFound) {
+
+    if (!isEmailFound && isPasswordFound) {
       return ValidationStatus.emailNotFound;
+    } else if (isEmailFound && !isPasswordFound) {
+      return ValidationStatus.passwordIncorrect;
+    } else {
+      return ValidationStatus.invalidInput;
     }
-    return ValidationStatus.emailNotFound;
   }
 
   int getCollegeIdIfEmailAndPasswordValid(String email, String password) {
@@ -355,6 +360,8 @@ class LoginScreenState extends State<LoginScreen> {
                             break;
                           case ValidationStatus.invalidInput:
                             _mensager(context, 'enter your email and password');
+                            emailController.clear();
+                            passwordController.clear();
                             break;
                         }
                       },
