@@ -1,10 +1,9 @@
-import 'package:crud/drift.dart';
-import 'package:crud/main.dart';
-import 'package:crud/validate.dart';
+import '/appDatabase/drift.dart';
+import 'main.dart';
+import 'package:crud/acceptance/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'palette.dart';
+import '/colorPallete/palette.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -260,7 +259,8 @@ class LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(21),
                           borderSide: const BorderSide(
                               color: ColorPalette.borderColorInputActivate,
-                              width: 2))),
+                              width: 2)),
+                      prefixIcon: const Icon(Icons.email_rounded)),
                   controller: emailController,
                 ),
               ),
@@ -282,6 +282,7 @@ class LoginScreenState extends State<LoginScreen> {
                           borderSide: const BorderSide(
                               color: ColorPalette.borderColorInputActivate,
                               width: 2)),
+                      prefixIcon: const Icon(Icons.password),
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {

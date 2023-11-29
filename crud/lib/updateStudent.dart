@@ -1,11 +1,11 @@
-import 'package:crud/main.dart';
-import 'package:crud/palette.dart';
+import 'mainApp/main.dart';
+import 'package:crud/colorPallete/palette.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:crud/drift.dart';
-import 'package:crud/validate.dart';
+import 'appDatabase/drift.dart';
+import 'package:crud/acceptance/validate.dart';
 import 'package:flutter/services.dart';
-import 'nameCourses.dart';
+import 'courses/nameCourses.dart';
 
 class EditStudentScreen extends StatefulWidget {
   final Student student;

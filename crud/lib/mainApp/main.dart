@@ -1,12 +1,11 @@
-import 'package:crud/drift.dart';
+import '/appDatabase/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/services.dart';
-
-import 'validate.dart';
-import 'updateStudent.dart';
-import 'nameCourses.dart';
-import 'palette.dart';
+import '/acceptance/validate.dart';
+import '/updateStudent.dart';
+import '/courses/nameCourses.dart';
+import '/colorPallete/palette.dart';
 import 'loginScreen.dart';
 
 void main() {
@@ -24,30 +23,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Students List App',
       theme: ThemeData(primarySwatch: Colors.purple),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home Screen'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-              ));
-            },
-            child: const Text('Login'),
-          ),
-        ));
   }
 }
 
