@@ -14,10 +14,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 final List<College> _colleges = [];
-final database = AppDatabase();
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
+
+enum ValidationStatus {
+  validCredentials,
+  emailNotFound,
+  passwordIncorrect,
+  invalidInput
+}
 
 class LoginScreenState extends State<LoginScreen> {
   @override
@@ -28,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   bool passwordObscured = true;
 
-  Future<void> _addPersons(String email, String password) async {
+  Future<void> _addColleges(String email, String password) async {
     final newCollege =
         CollegesCompanion.insert(email: email, password: password);
 
@@ -146,7 +152,7 @@ class LoginScreenState extends State<LoginScreen> {
                                 },
                               );
                             } else {
-                              _addPersons(email, password);
+                              _addColleges(email, password);
                               Navigator.of(context).pop();
                               emailController.clear();
                               passwordController.clear();
@@ -160,22 +166,71 @@ class LoginScreenState extends State<LoginScreen> {
                 ))));
   }
 
-  bool isEmailAndPasswordValid(String email, String password) {
+  ValidationStatus isEmailAndPasswordValid(String email, String password) {
+    if (email.isEmpty || password.isEmpty) {
+      return ValidationStatus.invalidInput;
+    }
+
+    bool isEmailFound = false;
+
     for (var college in _colleges) {
-      if (college.email == email && college.password == password) {
-        return true;
+      if (college.email == email) {
+        isEmailFound = true;
+        if (college.password == password) {
+          return ValidationStatus.validCredentials;
+        } else {
+          return ValidationStatus.passwordIncorrect;
+        }
       }
     }
-    return false;
+    if (!isEmailFound) {
+      return ValidationStatus.emailNotFound;
+    }
+    return ValidationStatus.emailNotFound;
   }
 
   int getCollegeIdIfEmailAndPasswordValid(String email, String password) {
     for (var college in _colleges) {
       if (college.email == email && college.password == password) {
-        return college.id; // Suponha que 'id' seja o campo do ID do colégio.
+        return college.id;
       }
     }
-    return -1; // Retorne -1 se as credenciais não forem válidas.
+    return -1;
+  }
+
+  Future<void> _mensager(BuildContext context, String error) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          padding: const EdgeInsets.all(16),
+          height: 90,
+          decoration: const BoxDecoration(
+              color: Color(0xFFC72C41),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            children: [
+              const SizedBox(width: 48),
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Oh snap!',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  Text(
+                    'Incorrect $error , please try again',
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    maxLines: 12,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
   }
 
   @override
@@ -244,75 +299,77 @@ class LoginScreenState extends State<LoginScreen> {
                   inputFormatters: [LengthLimitingTextInputFormatter(10)],
                 ),
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      registerCollege();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF522151)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                    child: const Text('Register'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () async {
-                      bool isPersonFound = isEmailAndPasswordValid(
-                          emailController.text, passwordController.text);
-                      if (isPersonFound) {
-                        int collegeId = getCollegeIdIfEmailAndPasswordValid(
-                            emailController.text, passwordController.text);
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                StudentsListScreen(collegeId: collegeId),
+                  SizedBox(
+                    width: 183,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        registerCollege();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF522151)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-
-                        emailController.clear();
-                        passwordController.clear();
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Warning"),
-                              content: const Text(
-                                  "Person Cannot Find It, Re-Enter The Password And Email"),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text("Exit"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF7E237C)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
+                      child: const Text('Register'),
                     ),
-                    child: const Text('Login'),
                   ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 183,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        ValidationStatus isPersonFound =
+                            isEmailAndPasswordValid(
+                                emailController.text, passwordController.text);
+                        switch (isPersonFound) {
+                          case ValidationStatus.validCredentials:
+                            int collegeId = getCollegeIdIfEmailAndPasswordValid(
+                                emailController.text, passwordController.text);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    StudentsListScreen(collegeId: collegeId),
+                              ),
+                            );
+
+                            emailController.clear();
+                            passwordController.clear();
+                            break;
+                          case ValidationStatus.passwordIncorrect:
+                            _mensager(context, 'password');
+                            passwordController.clear();
+                            break;
+                          case ValidationStatus.emailNotFound:
+                            _mensager(context, 'email');
+                            emailController.clear();
+                            break;
+                          case ValidationStatus.invalidInput:
+                            _mensager(context, 'enter your email and password');
+                            break;
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF7E237C)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      child: const Text('Login'),
+                    ),
+                  )
                 ],
               ),
             ],
